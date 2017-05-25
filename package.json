@@ -1,0 +1,19 @@
+{
+  "name": "cordova-plugin-data-protection",
+  "version": "0.0.1",
+  "description": "Provides ability to detect device encryption/data protection on iOS and Android.",
+
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isw-kudos/cordova-plugin-data-protection.git"
+  },
+  "keywords": [
+    "cordova"
+  ],
+  "author": "Mark Donnellon <mdonnellon@isw.net.au> (https://www.linkedin.com/in/markdonnellon)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/isw-kudos/cordova-plugin-data-protection/issues"
+  },
+  "homepage": "https://github.com/isw-kudos/cordova-plugin-data-protection#readme"
+}
