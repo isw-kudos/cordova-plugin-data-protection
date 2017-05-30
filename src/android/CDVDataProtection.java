@@ -5,13 +5,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.RestrictionEntry;
 import android.content.RestrictionsManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -27,14 +30,40 @@ public class CDVDataProtection extends CordovaPlugin{
     public boolean execute(String action, JSONArray data, CallbackContext callbackContext) throws JSONException {
         final String funcName = "execute";
         if(DEBUG)Log.v(TAG, funcName + " start. data: " + data.toString());
+        callbackContext.success((getDeviceEncryptionStatus() == DevicePolicyManager.ENCRYPTION_STATUS_ACTIVE) ? 1 : 0);
         return true;
     }
 
-    public Context getContext(){
-        return getActivity();
+    /**
+     * Returns the encryption status of the device. Prior to Honeycomb, whole device encryption was
+     * not supported by Android, and this method returns ENCRYPTION_STATUS_UNSUPPORTED.
+     *
+     * @return One of the following constants from DevicePolicyManager:
+     *         ENCRYPTION_STATUS_UNSUPPORTED, ENCRYPTION_STATUS_INACTIVE,
+     *         ENCRYPTION_STATUS_ACTIVATING, or ENCRYPTION_STATUS_ACTIVE.
+     */
+    @TargetApi(11)
+    private int getDeviceEncryptionStatus() {
+
+        int status = DevicePolicyManager.ENCRYPTION_STATUS_UNSUPPORTED;
+
+        if (Build.VERSION.SDK_INT >= 11) {
+            final DevicePolicyManager dpm = (DevicePolicyManager) getContext().getSystemService(Context.DEVICE_POLICY_SERVICE);
+            if (dpm != null) {
+                status = dpm.getStorageEncryptionStatus();
+            }
+        }
+
+        return status;
     }
+
+
     public Activity getActivity(){
         return this.cordova.getActivity();
+    }
+
+    public Context getContext(){
+      return getActivity();
     }
 
     /**
