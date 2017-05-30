@@ -1,5 +1,6 @@
 #import "CDVDataProtection.h"
 #import <Cordova/CDVPlugin.h>
+#import <LocalAuthentication/LAContext.h>
 
 @implementation CDVDataProtection
 
@@ -11,19 +12,17 @@
   //See "Data Protection" https://developer.apple.com/library/content/documentation/IDEs/Conceptual/AppDistributionGuide/AddingCapabilities/AddingCapabilities.html
   //and "Protecting Data Using On-Disk Encryption" https://developer.apple.com/library/content/documentation/iPhone/Conceptual/iPhoneOSProgrammingGuide/StrategiesforImplementingYourApp/StrategiesforImplementingYourApp.html#//apple_ref/doc/uid/TP40007072-CH5-SW21
 
-
+  NSLog(@"CDVDataProtection isEnabled start");
   CDVPluginResult* pluginResult = nil;
 
-  //https://github.com/liamnichols/UIDevice-PasscodeStatus/issues/3#issuecomment-190294010
   LAContext *context = [LAContext new];
   NSError *error;
   BOOL passcodeEnabled = [context canEvaluatePolicy:LAPolicyDeviceOwnerAuthentication error:&error];
-
-  if (error != nil) {
-    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]]];
-  } else if (passcodeEnabled != nil) {
-    //send passcode status
+  NSLog(@"CDVDataProtection isEnabled passcodeEnabled: %s", passcodeEnabled ? "YES" : "NO");
+  if ((passcodeEnabled && error == nil) || [error code] == kLAErrorPasscodeNotSet) {
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsBool:passcodeEnabled];
+  } else {
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:[error localizedDescription]];
   }
 
   [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];

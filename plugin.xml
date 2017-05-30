@@ -5,7 +5,7 @@
 	version="0.0.1">
 
 	<name>Cordova Data Protection</name>
-	<info>Provides ability to detect device encryption/data protection on iOS and Android.</info>
+	<info>Provides ability to detect device encryption/data protection on iOS 9+ and Android.</info>
 
 	<engines>
 		<engine name="cordova" version=">=6.1.0"/>
@@ -34,6 +34,7 @@
         <feature name="CDVDataProtection">
             <param name="ios-package" value="CDVDataProtection" />
         </feature>
+				<preference name="deployment-target" value="9.0" />
     </config-file>
 	</platform>
 </plugin>
