@@ -38,9 +38,10 @@ public class CDVDataProtection extends CordovaPlugin{
      * Returns the encryption status of the device. Prior to Honeycomb, whole device encryption was
      * not supported by Android, and this method returns ENCRYPTION_STATUS_UNSUPPORTED.
      *
+     * https://stackoverflow.com/questions/12640708/check-if-android-filesystem-is-encrypted
      * @return One of the following constants from DevicePolicyManager:
      *         ENCRYPTION_STATUS_UNSUPPORTED, ENCRYPTION_STATUS_INACTIVE,
-     *         ENCRYPTION_STATUS_ACTIVATING, or ENCRYPTION_STATUS_ACTIVE.
+     *         ENCRYPTION_STATUS_ACTIVATING, ENCRYPTION_STATUS_ACTIVE, ENCRYPTION_STATUS_ACTIVE_DEFAULT_KEY(API23/6.0)
      */
     @TargetApi(11)
     private int getDeviceEncryptionStatus() {
@@ -53,7 +54,7 @@ public class CDVDataProtection extends CordovaPlugin{
                 status = dpm.getStorageEncryptionStatus();
             }
         }
-
+        Log.d(TAG, "Encryption Status: " + status);
         return status;
     }
 

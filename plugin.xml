@@ -30,5 +30,10 @@
 	<platform name="ios">
 		<header-file src="src/ios/CDVDataProtection.h" />
 		<source-file src="src/ios/CDVDataProtection.m" />
+		<config-file target="config.xml" parent="/*">
+        <feature name="CDVDataProtection">
+            <param name="ios-package" value="CDVDataProtection" />
+        </feature>
+    </config-file>
 	</platform>
 </plugin>
